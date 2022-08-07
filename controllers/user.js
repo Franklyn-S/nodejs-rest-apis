@@ -20,7 +20,6 @@ exports.getUserStatus = (req, res, next) => {
 
 exports.updateUserStatus = (req, res, next) => {
   const { userId } = req;
-  console.log(req.body);
   const { status } = req.body;
   User.findById(userId)
     .then(user => {
