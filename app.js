@@ -10,6 +10,7 @@ const { v4: uuidv4 } = require("uuid");
 const feedRoutes = require("./routes/feed");
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
+const { init } = require("./socket");
 
 const MONGODB_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@nodejs-course-fmyzv.mongodb.net/blog`;
 const app = express();
@@ -64,11 +65,13 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(result => {
-    app.listen(process.env.PORT || 5000);
+    const server = app.listen(process.env.PORT || 5000);
+    init(server).on("connection", socket => {
+      io = socket;
+    });
   })
   .catch(err => {
     if (!err.statusCode) {
       err.statusCode = 500;
     }
-    next(err);
   });

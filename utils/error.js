@@ -3,7 +3,7 @@ const errorHandler = (err, next, message) => {
   if (!err.statusCode) {
     error.statusCode = 500;
   }
-  error.message = message;
+  error.message = message + " " + err.message;
   next(error);
 };
 
